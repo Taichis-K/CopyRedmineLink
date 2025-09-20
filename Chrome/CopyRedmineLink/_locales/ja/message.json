@@ -1,0 +1,8 @@
+{
+  "extName": {
+    "message": "Slack・Redmine・Markdown用URLコピー"
+  },
+  "extDesc": {
+    "message": "ワンクリックで現在のページURLをコピー。Redmine課題ページでは「#番号: タイトル」を自動抽出し、Slack / Redmine / Markdown形式に変換できます。"
+  }
+}
