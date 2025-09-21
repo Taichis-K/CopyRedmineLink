@@ -8,6 +8,8 @@
 
 ワンクリックでURLをコピーできるChrome拡張機能。Redmineのチケットページでは「#番号: タイトル」を自動抽出し、Slack・Redmine・Markdown形式で簡単に共有できます。
 
+![CopyRedmineLink Screenshot](Screenshot1.jpg)
+
 ### 🎯 機能
 
 #### 3つのコピー形式
@@ -56,6 +58,8 @@ Chrome Web Storeから直接インストール可能（申請準備中）
 ## English
 
 A Chrome extension that copies URLs with one click. For Redmine issue pages, it automatically extracts "#ID: Title" and formats it for easy sharing in Slack, Redmine, and Markdown.
+
+![CopyRedmineLink Screenshot](Screenshot1.jpg)
 
 ### 🎯 Features
 
