@@ -1,8 +1,0 @@
-{
-  "extName": {
-    "message": "Copy URL for Slack, Redmine & Markdown"
-  },
-  "extDesc": {
-    "message": "Easily copy the current page URL in Slack, Redmine, or Markdown format. For Redmine issue pages, the extension automatically extracts “#ID: Title” for neat, shareable links."
-  }
-}

@@ -1,0 +1,8 @@
+{
+  "extName": {
+    "message": "Copy URL for Slack, Redmine & Markdown"
+  },
+  "extDesc": {
+    "message": "Copy current page URL in one click. Auto-extracts 'ID: Title'from Redmine issues for Slack, Redmine, and Markdown formats."
+  }
+}
