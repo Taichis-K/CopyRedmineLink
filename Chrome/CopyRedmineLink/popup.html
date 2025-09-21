@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Copy URL</title>
+  <style>
+    body { width: 200px; padding: 12px; font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif; }
+    h3 { margin: 0 0 10px 0; font-size: 14px; }
+    button {
+      width: 100%; padding: 10px; margin: 6px 0;
+      border: none; border-radius: 8px; cursor: pointer; font-size: 14px; color: #fff;
+    }
+    #btn-slack   { background: #4A154B; }
+    #btn-redmine { background: #B71C1C; }
+    #btn-md      { background: #2D6CDF; }
+    .status { text-align: center; font-size: 12px; margin-top: 8px; min-height: 18px; }
+    .ok { color: #2e7d32; } .ng { color: #c62828; }
+  </style>
+</head>
+<body>
+  <h3>Copy URL Extension</h3>
+  <button id="btn-slack">Slack</button>
+  <button id="btn-redmine">Redmine</button>
+  <button id="btn-md">Markdown</button>
+  <div id="status" class="status"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
