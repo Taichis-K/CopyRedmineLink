@@ -24,8 +24,8 @@
 
 ### 📦 インストール
 
-#### Chrome Web Store（準備中）
-Chrome Web Storeから直接インストール可能（申請準備中）
+#### Chrome ウェブストア - 拡張機能
+[Chrome ウェブストア - 拡張機能からインストール](https://chromewebstore.google.com/detail/copy-url-for-slack-redmin/hboceemaeifahfmnpeghilmclnbnkpbg)
 
 #### 開発者向けインストール
 1. このリポジトリをクローン
@@ -75,8 +75,8 @@ A Chrome extension that copies URLs with one click. For Redmine issue pages, it 
 
 ### 📦 Installation
 
-#### Chrome Web Store (Coming Soon)
-Direct installation from Chrome Web Store (pending review)
+#### Chrome Web Store
+[Install from Chrome Web Store](https://chromewebstore.google.com/detail/copy-url-for-slack-redmin/hboceemaeifahfmnpeghilmclnbnkpbg)
 
 #### Developer Installation
 1. Clone this repository
@@ -130,4 +130,4 @@ Issues and pull requests are welcome! / Issue報告やプルリクエストを�
 
 ## 📧 Contact / お問い合わせ
 
-For issues or suggestions, please use [GitHub Issues](https://github.com/yourusername/CopyRedmineLink/issues).
+For issues or suggestions, please use [GitHub Issues](https://github.com/Taichis-K/CopyRedmineLink/issues).
