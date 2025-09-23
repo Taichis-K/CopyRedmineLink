@@ -15,6 +15,12 @@ function isRedmineUrl(url = "") {
   return /redmine|\/issues?\/|\/projects\/|tracker/i.test(url || "");
 }
 
+function isRestrictedPage(url = "") {
+  return url.startsWith('chrome://') ||
+         url.startsWith('chrome-extension://') ||
+         url.includes('chromewebstore.google.com');
+}
+
 function normalizeIssueHref(pageUrl = "") {
   try {
     const u = new URL(pageUrl);
@@ -57,7 +63,8 @@ function slackVisibleFromCommonTitle(commonTitle = "") {
 // ========== Slack：Selectionコピー（CF_HTMLはブラウザ生成） ==========
 function pageCopyBySelection({ text, href, style }) {
   const a = document.createElement('a');
-  a.href = href;
+  // URLエンコードされた文字を保持するため、setAttribute を使用
+  a.setAttribute('href', href);
   a.textContent = text;
   if (style) a.setAttribute('style', style);
   a.style.position = 'fixed'; a.style.left = '-9999px'; a.style.top = '0';
@@ -75,29 +82,100 @@ function pageCopyBySelection({ text, href, style }) {
   return { ok, used: 'Selection+execCommand(copy)' };
 }
 
+// ポップアップ内でリッチテキストをコピー（制限されたページ用）
+function copyRichTextInPopup(text, href) {
+  const container = document.createElement('div');
+  container.style.position = 'fixed';
+  container.style.left = '-9999px';
+  container.style.top = '0';
+
+  const a = document.createElement('a');
+  a.setAttribute('href', href);
+  a.textContent = text;
+  a.style.color = 'rgb(6, 82, 45)';
+  a.style.textDecoration = 'none';
+
+  container.appendChild(a);
+  document.body.appendChild(container);
+
+  const sel = window.getSelection();
+  const range = document.createRange();
+  range.selectNode(a);
+  sel.removeAllRanges();
+  sel.addRange(range);
+
+  let success = false;
+  try {
+    success = document.execCommand('copy');
+  } catch (e) {
+    console.error('Copy failed in popup:', e);
+  }
+
+  sel.removeAllRanges();
+  document.body.removeChild(container);
+
+  return success;
+}
+
+// Slack用のコピー処理（制限ページとフォールバック共通）
+async function performSlackCopy(tab, usePopupMethod = false) {
+  const url = tab.url || '';
+  const href = normalizeIssueHref(url);
+  const baseTitle = extractRedmineIssueTitle(tab.title || '', url);
+  const visible = slackVisibleFromCommonTitle(baseTitle);
+
+  if (usePopupMethod || isRestrictedPage(url)) {
+    // ポップアップ内でのコピー処理
+    const success = copyRichTextInPopup(visible, href);
+    if (success) {
+      return { success: true, message: 'Copied (Slack)' };
+    } else {
+      // テキスト形式にフォールバック
+      const fallbackText = `${visible} - ${href}`;
+      await navigator.clipboard.writeText(fallbackText);
+      return { success: true, message: 'Copied as text' };
+    }
+  }
+
+  // 通常のコンテンツスクリプト実行
+  const style = "color: rgb(6, 82, 45); text-decoration: none;";
+  const [{ result }] = await chrome.scripting.executeScript({
+    target: { tabId: tab.id }, world: "MAIN",
+    func: pageCopyBySelection,
+    args: [{ text: visible, href, style }]
+  });
+
+  return {
+    success: result && result.ok,
+    message: result && result.ok ? 'Copied (Slack)' : 'Failed (Slack)'
+  };
+}
+
 // ========== Handlers ==========
 
 // Slack：Redmine抽出は共通 → 先頭#のみ「・」に置換 → Selectionコピー
 async function copySlack() {
   try {
     const tab = await activeTab();
-    const url = tab.url || '';
-    const href = normalizeIssueHref(url);
-
-    const baseTitle = extractRedmineIssueTitle(tab.title || '', url); // 共通抽出
-    const visible = slackVisibleFromCommonTitle(baseTitle);           // Slackだけ #→・
-
-    const style = "color: rgb(6, 82, 45); text-decoration: none;";
-    const [{ result }] = await chrome.scripting.executeScript({
-      target: { tabId: tab.id }, world: "MAIN",
-      func: pageCopyBySelection,
-      args: [{ text: visible, href, style }]
+    const result = await performSlackCopy(tab);
+    setStatus(result.message, result.success);
+  } catch (e) {
+    console.error('Error in copySlack:', e);
+    console.error('Error details:', {
+      message: e.message,
+      stack: e.stack,
+      tab: await activeTab()
     });
 
-    setStatus(result && result.ok ? 'Copied (Slack)' : 'Failed (Slack)', !!(result && result.ok));
-  } catch (e) {
-    console.error(e);
-    setStatus('Failed (Slack)', false);
+    // エラー時のフォールバック処理
+    try {
+      const tab = await activeTab();
+      const result = await performSlackCopy(tab, true);  // ポップアップメソッドを強制使用
+      setStatus(result.message + ' (fallback)', result.success);
+    } catch (fallbackError) {
+      console.error('Fallback also failed:', fallbackError);
+      setStatus(`Error: ${e.message}`, false);
+    }
   }
 }
 
