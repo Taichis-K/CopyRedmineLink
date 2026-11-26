@@ -17,7 +17,6 @@ This extension does NOT:
 ## Permissions Used
 The extension requires the following permissions solely for functionality:
 - **activeTab**: To access the current tab's title and URL when you click the extension
-- **scripting**: To execute the copy function on the page
 - **clipboardWrite**: To copy formatted text to your clipboard
 
 ## Data Processing
@@ -55,7 +54,6 @@ CopyRedmineLinkは、URLを様々な形式でコピーするためのブラウ�
 ## 使用する権限
 拡張機能は機能のためだけに以下の権限を必要とします：
 - **activeTab**: 拡張機能クリック時に現在のタブのタイトルとURLにアクセス
-- **scripting**: ページ上でコピー機能を実行
 - **clipboardWrite**: フォーマットされたテキストをクリップボードにコピー
 
 ## データ処理
