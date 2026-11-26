@@ -113,7 +113,7 @@ A Chrome extension that copies URLs with one click. For Redmine issue pages, it 
 - No user data collection / ユーザーデータの収集なし
 - No browsing history tracking / 閲覧履歴の追跡なし
 
-See [Privacy Policy](../PRIVACY_POLICY.md) for details.
+See [Privacy Policy](PRIVACY_POLICY.md) for details.
 
 ## 🌐 Supported Languages / 対応言語
 
